@@ -72,18 +72,7 @@ class Settings(BaseSettings):
     TOP_P_INFERENCE: float = 0.9
     MAX_NEW_TOKENS_INFERENCE: int = 150
     
-    # Legacy AWS Settings (Deprecated - kept for backward compatibility)
-    AWS_REGION: str = "eu-central-1"
-    AWS_ACCESS_KEY: str | None = None
-    AWS_SECRET_KEY: str | None = None
-    AWS_ARN_ROLE: str | None = None
-    GPU_INSTANCE_TYPE: str = "ml.g5.2xlarge"  # Deprecated
-    SM_NUM_GPUS: int = 1  # Deprecated
-    COPIES: int = 1  # Deprecated
-    GPUS: int = 1  # Deprecated
-    CPUS: int = 2  # Deprecated
-    SAGEMAKER_ENDPOINT_CONFIG_INFERENCE: str = "twin"  # Deprecated
-    SAGEMAKER_ENDPOINT_INFERENCE: str = "twin"  # Deprecated
+
 
     # RAG
     TEXT_EMBEDDING_MODEL_ID: str = "sentence-transformers/all-MiniLM-L6-v2"
