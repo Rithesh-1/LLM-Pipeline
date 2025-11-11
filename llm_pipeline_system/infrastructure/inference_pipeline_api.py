@@ -2,13 +2,13 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from llm_pipeline_system.settings import settings
-from llm_pipeline_system.application.rag.retriever import ContextRetriever
-from llm_pipeline_system.application.utils import misc
-from llm_pipeline_system.domain.embedded_chunks import EmbeddedChunk
-from llm_pipeline_system.infrastructure.clearml_utils import configure_clearml
-from llm_pipeline_system.model.inference import InferenceExecutor
-from llm_pipeline_system.model.inference.local_inference import LocalLLMInference
+from llm_engineering import settings
+from llm_engineering.application.rag.retriever import ContextRetriever
+from llm_engineering.application.utils import misc
+from llm_engineering.domain.embedded_chunks import EmbeddedChunk
+from llm_engineering.infrastructure.clearml_utils import configure_clearml
+from llm_engineering.model.inference import InferenceExecutor
+from llm_engineering.model.inference.local_inference import LocalLLMInference
 
 # Initialize ClearML for monitoring
 clearml_task = configure_clearml()

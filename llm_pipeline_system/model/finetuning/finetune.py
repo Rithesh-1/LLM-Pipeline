@@ -83,7 +83,7 @@ def load_model(
     return model, tokenizer
 
 
-
+import mlflow
 
 
 def finetune(
@@ -167,7 +167,9 @@ def finetune(
                 lr_scheduler_type="linear",
                 per_device_eval_batch_size=per_device_train_batch_size,
                 warmup_steps=10,
-
+                output_dir=output_dir,
+                report_to="mlflow",
+                seed=0,
             ),
         )
     elif finetuning_type == "dpo":
@@ -217,7 +219,9 @@ def finetune(
                 warmup_steps=10,
                 output_dir=output_dir,
                 eval_steps=0.2,
-
+                logging_steps=1,
+                report_to="mlflow",
+                seed=0,
             ),
         )
     else:
@@ -306,48 +310,58 @@ if __name__ == "__main__":
     print(f"Number of GPUs: '{args.n_gpus}'")  # noqa
 
     if args.finetuning_type == "sft":
+        with mlflow.start_run():
             print("Starting SFT training...")  # noqa
-        base_model_name = "meta-llama/Llama-3.1-8B"
-        print(f"Training from base model '{base_model_name}'")  # noqa
+            base_model_name = "meta-llama/Llama-3.1-8B"
+            print(f"Training from base model '{base_model_name}'")  # noqa
 
-        output_dir_sft = Path(args.model_dir) / "output_sft"
-        model, tokenizer = finetune(
-            finetuning_type="sft",
-            model_name=base_model_name,
-            output_dir=str(output_dir_sft),
-            dataset_huggingface_workspace=args.dataset_huggingface_workspace,
-            num_train_epochs=args.num_train_epochs,
-            per_device_train_batch_size=args.per_device_train_batch_size,
-            learning_rate=args.learning_rate,
-        )
-        inference(model, tokenizer)
+            output_dir_sft = Path(args.model_dir) / "output_sft"
+            model, tokenizer = finetune(
+                finetuning_type="sft",
+                model_name=base_model_name,
+                output_dir=str(output_dir_sft),
+                dataset_huggingface_workspace=args.dataset_huggingface_workspace,
+                num_train_epochs=args.num_train_epochs,
+                per_device_train_batch_size=args.per_device_train_batch_size,
+                learning_rate=args.learning_rate,
+            )
+            inference(model, tokenizer)
 
+            mlflow.transformers.log_model(
+                transformers_model={"model": model, "tokenizer": tokenizer},
+                artifact_path="sft-model",
+                registered_model_name="TwinLlama-SFT"
+            )
 
-
-        sft_output_model_repo_id = f"{args.model_output_huggingface_workspace}/TwinLlama-3.1-8B"
-        save_model(model, tokenizer, "model_sft", push_to_hub=True, repo_id=sft_output_model_repo_id)
+            sft_output_model_repo_id = f"{args.model_output_huggingface_workspace}/TwinLlama-3.1-8B"
+            save_model(model, tokenizer, "model_sft", push_to_hub=True, repo_id=sft_output_model_repo_id)
 
     elif args.finetuning_type == "dpo":
+        with mlflow.start_run():
             print("Starting DPO training...")  # noqa
 
-        sft_base_model_repo_id = f"{args.model_output_huggingface_workspace}/TwinLlama-3.1-8B"
-        sft_base_model_repo_id = check_if_huggingface_model_exists(sft_base_model_repo_id)
-        print(f"Training from base model '{sft_base_model_repo_id}'")  # noqa
+            sft_base_model_repo_id = f"{args.model_output_huggingface_workspace}/TwinLlama-3.1-8B"
+            sft_base_model_repo_id = check_if_huggingface_model_exists(sft_base_model_repo_id)
+            print(f"Training from base model '{sft_base_model_repo_id}'")  # noqa
 
-        output_dir_dpo = Path(args.model_dir) / "output_dpo"
-        model, tokenizer = finetune(
-            finetuning_type="dpo",
-            model_name=sft_base_model_repo_id,
-            output_dir=str(output_dir_dpo),
-            dataset_huggingface_workspace=args.dataset_huggingface_workspace,
-            num_train_epochs=1,
-            per_device_train_batch_size=args.per_device_train_batch_size,
-            learning_rate=2e-6,
-            is_dummy=args.is_dummy,
-        )
-        inference(model, tokenizer)
+            output_dir_dpo = Path(args.model_dir) / "output_dpo"
+            model, tokenizer = finetune(
+                finetuning_type="dpo",
+                model_name=sft_base_model_repo_id,
+                output_dir=str(output_dir_dpo),
+                dataset_huggingface_workspace=args.dataset_huggingface_workspace,
+                num_train_epochs=1,
+                per_device_train_batch_size=args.per_device_train_batch_size,
+                learning_rate=2e-6,
+                is_dummy=args.is_dummy,
+            )
+            inference(model, tokenizer)
 
+            mlflow.transformers.log_model(
+                transformers_model={"model": model, "tokenizer": tokenizer},
+                artifact_path="dpo-model",
+                registered_model_name="TwinLlama-DPO"
+            )
 
-
-        dpo_output_model_repo_id = f"{args.model_output_huggingface_workspace}/TwinLlama-3.1-8B-DPO"
-        save_model(model, tokenizer, "model_dpo", push_to_hub=True, repo_id=dpo_output_model_repo_id)
+            dpo_output_model_repo_id = f"{args.model_output_huggingface_workspace}/TwinLlama-3.1-8B-DPO"
+            save_model(model, tokenizer, "model_dpo", push_to_hub=True, repo_id=dpo_output_model_repo_id)
