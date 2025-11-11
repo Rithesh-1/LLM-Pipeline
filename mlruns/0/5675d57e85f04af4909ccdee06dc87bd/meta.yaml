@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/5675d57e85f04af4909ccdee06dc87bd/artifacts
+deleted_time: 1762505506884
+end_time: 1762466984536
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 5675d57e85f04af4909ccdee06dc87bd
+run_name: generate_instruct_datasets
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762466910107
+status: 4
+tags: []
+user_id: Rithesh_RKZ

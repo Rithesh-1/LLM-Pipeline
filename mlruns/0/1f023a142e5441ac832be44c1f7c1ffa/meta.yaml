@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/1f023a142e5441ac832be44c1f7c1ffa/artifacts
+deleted_time: 1762456966216
+end_time: 1762455977992
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 1f023a142e5441ac832be44c1f7c1ffa
+run_name: smiling-slug-892
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762455977070
+status: 4
+tags: []
+user_id: Rithesh_RKZ

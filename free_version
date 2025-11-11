@@ -1,0 +1,211 @@
+# Implementation Strategy: Migrating to a Free, Open-Source MLOps Stack
+
+## 1. Introduction
+
+### Goal
+This document outlines the strategy to refactor the project, replacing the current MLOps stack (ZenML, Comet ML, AWS SageMaker) with a free, open-source alternative.
+
+### Target Stack
+- **Orchestration & Experiment Tracking:** MLflow
+- **Compute for Training:** Google Colab / Local GPU
+- **Model Deployment:** BentoML
+
+### Expectation
+This is a **significant refactoring effort**, not a minor modification. It involves replacing the core orchestration and deployment layers of the project. The end result will be a robust, fully self-hosted system without reliance on paid cloud services.
+
+---
+
+## 2. Phase 1: Replace ZenML and Comet ML with MLflow
+
+**Objective:** Replace the pipeline orchestration and experiment tracking components.
+
+### Step 2.1: Set Up MLflow
+1.  **Install MLflow:**
+    ```bash
+    pip install mlflow
+    ```
+2.  **Start the MLflow Tracking Server:**
+    Run the following command from your terminal. This will start a local server to view and manage your experiments.
+    ```bash
+    mlflow ui
+    ```
+    The UI will be available at `http://127.0.0.1:5000`.
+
+### Step 2.2: Convert ZenML Pipelines to an MLflow Project
+The concept of ZenML `Pipelines` and `Steps` will be replaced by an `MLproject` file that defines entry points for your workflows.
+
+1.  **Refactor ZenML Steps:**
+    The classes in the `steps/` directory must be converted into simple Python functions. The logic within the `entrypoint` methods will form the body of these new functions.
+
+2.  **Create `MLproject` File:**
+    Create a new file named `MLproject` in the root directory. This file will define the new entry points for the pipelines.
+
+    **`MLproject` Example:**
+    ```yaml
+    name: llm-engineers-handbook
+
+    python_env: python_env.yaml
+
+    entry_points:
+      digital_data_etl:
+        command: "python -m pipelines.run_mlflow --pipeline digital_data_etl"
+      
+      feature_engineering:
+        command: "python -m pipelines.run_mlflow --pipeline feature_engineering"
+
+      generate_instruct_datasets:
+        command: "python -m pipelines.run_mlflow --pipeline generate_instruct_datasets"
+
+      training:
+        parameters:
+          config_path: {type: str, default: "configs/training.yaml"}
+        command: "python -m pipelines.run_mlflow --pipeline training --config-path {config_path}"
+    ```
+
+3.  **Create a new Pipeline Runner:**
+    Create a new script `pipelines/run_mlflow.py`. This script will contain the logic that was previously in the ZenML steps, now organized into functions that are called based on the `--pipeline` argument. This script is responsible for chaining the steps together.
+
+### Step 2.3: Instrument Code with MLflow Tracking
+Replace all calls to `Comet ML` with `MLflow` tracking APIs. This is most critical in the training script.
+
+1.  **Modify `llm_engineering/model/finetuning/finetune.py`:**
+    -   Import `mlflow`.
+    -   Wrap your training run with `with mlflow.start_run():`.
+    -   Replace `comet_ml.log_...` with MLflow equivalents.
+
+    **Example:**
+    ```python
+    # Before (Comet ML)
+    # experiment.log_parameters(params)
+    # experiment.log_metric("loss", loss_value)
+
+    # After (MLflow)
+    import mlflow
+    mlflow.log_params(params)
+    mlflow.log_metric("loss", loss_value)
+    ```
+2.  **Log the Model:**
+    After training is complete, log the model to the MLflow Model Registry. This is crucial for deployment.
+    ```python
+    # In your training script, after training is done
+    mlflow.transformers.log_model(
+        transformers_model={"model": model, "tokenizer": tokenizer},
+        artifact_path="twinllama-dpo-model",
+        registered_model_name="twinllama-dpo"
+    )
+    ```
+
+---
+
+## 3. Phase 2: Adapt Training for Free Compute
+
+**Objective:** Execute the fine-tuning pipeline without AWS SageMaker.
+
+### Step 3.1: Run Training
+You can now run the training pipeline using the MLflow CLI, which will execute the entry point defined in your `MLproject` file.
+
+1.  **Option A: Using Google Colab**
+    -   Create a new Colab notebook.
+    -   Clone your repository: `!git clone ...`
+    -   Install dependencies: `!pip install -r requirements.txt`
+    -   Run the training pipeline: `!mlflow run . -e training`
+    -   *Note: You will need to configure the notebook to communicate with your MLflow tracking server (e.g., using a hosted solution or `ngrok`).*
+
+2.  **Option B: Using a Local GPU**
+    -   Ensure you have an NVIDIA GPU with the correct CUDA drivers installed.
+    -   From your project's root directory, run:
+        ```bash
+        mlflow run . -e training --no-conda
+        ```
+
+---
+
+## 4. Phase 3: Replace SageMaker Deployment with BentoML
+
+**Objective:** Serve the fine-tuned model as a free, self-hosted API.
+
+### Step 4.1: Set Up BentoML
+1.  **Install BentoML:**
+    ```bash
+    pip install bentoml
+    ```
+
+### Step 4.2: Create a BentoML Service
+This service will load your model from the MLflow Registry and define the inference logic.
+
+1.  **Create `llm_engineering/inference/bento_service.py`:**
+    ```python
+    import bentoml
+    import mlflow
+    from langchain.chains import RetrievalQA
+    from langchain_community.vectorstores import Qdrant
+    from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+
+    # Define the BentoML service
+    @bentoml.service
+    class RAGService:
+        def __init__(self) -> None:
+            # Load model from MLflow Model Registry
+            logged_model_uri = "models:/twinllama-dpo/latest"
+            self.llm = mlflow.transformers.load_model(logged_model_uri)
+            
+            # Initialize other RAG components (vector store, retriever)
+            # This logic can be adapted from tools/rag.py
+            self.retriever = Qdrant.from_existing_collection(...).as_retriever()
+
+        @bentoml.api
+        def rag_query(self, query: str) -> str:
+            # Replicate the RAG chain logic from tools/ml_service.py
+            qa_chain = RetrievalQA.from_chain_type(
+                llm=self.llm,
+                chain_type="stuff",
+                retriever=self.retriever,
+            )
+            result = qa_chain.run(query)
+            return result
+    ```
+
+### Step 4.3: Define the Bento
+Create a `bentofile.yaml` in the root directory to define the dependencies and metadata for your service.
+
+**`bentofile.yaml` Example:**
+```yaml
+service: "llm_engineering.inference.bento_service:RAGService"
+labels:
+  owner: llm-handbook-dev
+  project: llm-twin
+include:
+  - "*.py"
+python:
+  packages:
+    - torch
+    - mlflow
+    - bentoml
+    - langchain
+    - qdrant-client
+    - sentence-transformers
+```
+
+### Step 4.4: Build and Serve the Bento
+1.  **Build the Bento:** This packages your service and dependencies.
+    ```bash
+    bentoml build
+    ```
+2.  **Serve the API Locally:**
+    ```bash
+    bentoml serve
+    ```
+    Your API will be available at `http://127.0.0.1:3000`.
+
+### Step 4.5: Deploy to Production
+The built Bento is a self-contained archive. You can containerize it for deployment.
+```bash
+bentoml containerize <bento-tag>
+```
+This creates a Docker image that you can deploy to any cloud VM, a local server, or a Kubernetes cluster, giving you a fully self-hosted inference service.
+
+---
+
+## 5. Conclusion
+
+This strategy outlines a complete migration from a managed, paid MLOps stack to a free, powerful, open-source alternative. While this requires a significant, one-time refactoring effort, it grants you full control over your MLOps platform, eliminates vendor lock-in, and reduces operational costs to zero (excluding hosting).

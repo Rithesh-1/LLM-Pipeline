@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/0/1b0e3983b49e4731960f7057507aef0e/artifacts
+end_time: 1762709354058
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 1b0e3983b49e4731960f7057507aef0e
+run_name: monumental-mink-560
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762709124924
+status: 3
+tags: []
+user_id: Rithesh_RKZ

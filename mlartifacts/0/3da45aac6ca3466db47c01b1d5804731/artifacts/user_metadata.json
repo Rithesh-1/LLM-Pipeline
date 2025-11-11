@@ -1,0 +1,10 @@
+{
+  "query": {
+    "user_full_name": "Paul Iusztin"
+  },
+  "retrieved": {
+    "user_id": "8ef6a737-1bca-4ea7-83d0-445f7e29b7f0",
+    "first_name": "Paul",
+    "last_name": "Iusztin"
+  }
+}

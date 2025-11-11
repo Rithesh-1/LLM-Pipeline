@@ -1,0 +1,6 @@
+{
+  "data_categories": [],
+  "test_split_size": 0.1,
+  "train_num_samples_per_category": {},
+  "test_num_samples_per_category": {}
+}

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/727271d9de724c03ae914f023a13f2e5/artifacts
+deleted_time: 1762466007358
+end_time: 1762457027519
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 727271d9de724c03ae914f023a13f2e5
+run_name: welcoming-shrew-872
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762457026784
+status: 4
+tags: []
+user_id: Rithesh_RKZ

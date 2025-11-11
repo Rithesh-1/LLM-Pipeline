@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/0eba2a6f14f94e048fa60f1129ef1aab/artifacts
+deleted_time: 1762456966098
+end_time: 1762455779809
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 0eba2a6f14f94e048fa60f1129ef1aab
+run_name: nimble-shad-738
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762455778665
+status: 4
+tags: []
+user_id: Rithesh_RKZ

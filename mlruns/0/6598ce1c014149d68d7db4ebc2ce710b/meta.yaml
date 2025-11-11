@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/6598ce1c014149d68d7db4ebc2ce710b/artifacts
+deleted_time: 1762456966101
+end_time: 1762455452588
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 6598ce1c014149d68d7db4ebc2ce710b
+run_name: masked-sheep-14
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762455450541
+status: 4
+tags: []
+user_id: Rithesh_RKZ

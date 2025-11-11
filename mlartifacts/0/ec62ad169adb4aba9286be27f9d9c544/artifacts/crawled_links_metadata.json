@@ -1,0 +1,10 @@
+{
+  "medium.com": {
+    "successful": 5,
+    "total": 5
+  },
+  "decodingml.substack.com": {
+    "successful": 45,
+    "total": 45
+  }
+}

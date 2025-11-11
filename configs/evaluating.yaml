@@ -1,0 +1,5 @@
+# Configuration for evaluation pipeline
+# Note: ZenML-specific settings have been removed after migration to MLflow
+
+parameters:
+  is_dummy: true # Change this to 'false' to run the evaluation on the full dataset.

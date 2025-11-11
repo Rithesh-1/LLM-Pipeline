@@ -1,0 +1,10 @@
+# Configuration for export artifact to JSON pipeline
+# Note: ZenML-specific settings have been removed after migration to MLflow
+# This pipeline has been simplified and may require manual implementation
+
+parameters:
+  artifact_names:
+    - raw_documents
+    - cleaned_documents
+    - instruct_datasets
+    - preference_datasets

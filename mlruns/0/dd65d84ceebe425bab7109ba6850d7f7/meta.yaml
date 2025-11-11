@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/dd65d84ceebe425bab7109ba6850d7f7/artifacts
+deleted_time: 1762456966218
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: dd65d84ceebe425bab7109ba6850d7f7
+run_name: tasteful-shark-36
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762448971539
+status: 1
+tags: []
+user_id: Rithesh_RKZ

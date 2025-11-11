@@ -1,0 +1,12 @@
+{
+  "data_categories": [
+    "articles"
+  ],
+  "test_split_size": 0.1,
+  "train_num_samples_per_category": {
+    "articles": 545
+  },
+  "test_num_samples_per_category": {
+    "articles": 61
+  }
+}

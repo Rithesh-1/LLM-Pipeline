@@ -1,0 +1,78 @@
+graph TB
+    %% User Interaction Layer
+    User[👤 User] -->|Configures| Configs[📄 Config Files<br/>YAML Settings]
+    User -->|Executes| CLI_Tools[🛠️ CLI Tools]
+    User -->|Interacts with| Web_Interfaces[🌐 Web Interfaces]
+
+    %% CLI Tools
+    CLI_Tools --> Run_Pipelines[🔄 run.py<br/>Pipeline Executor]
+    CLI_Tools --> Deploy_Local[🚀 deploy_local.py<br/>Deployment Manager]
+    CLI_Tools --> MLflow_Runner[📊 run_mlflow.py<br/>MLflow Runner]
+    CLI_Tools --> ML_Service[⚡ ml_service.py<br/>RAG API Server]
+
+    %% Configuration Flow
+    Configs -->|Configures| Run_Pipelines
+    Configs -->|Configures| MLflow_Runner
+    Configs -->|Configures| Deploy_Local
+
+    %% Core Pipeline Orchestration
+    Run_Pipelines -->|Executes| Data_Pipelines[📈 Data Pipelines]
+    Run_Pipelines -->|Executes| Training_Pipeline[🎯 Training Pipeline]
+    Run_Pipelines -->|Executes| Evaluation_Pipeline[🔍 Evaluation Pipeline]
+
+    MLflow_Runner -->|Tracks| Data_Pipelines
+    MLflow_Runner -->|Reports to| MLflow_Server[📊 MLflow Server<br/>Experiment Tracking]
+
+    %% Pipeline Components
+    Data_Pipelines -->|Uses| Steps_ETL[📥 ETL Steps]
+    Data_Pipelines -->|Uses| Steps_Feature[🔧 Feature Engineering Steps]
+    Data_Pipelines -->|Uses| Steps_Dataset[📚 Dataset Generation Steps]
+
+    Training_Pipeline -->|Uses| Steps_Training[🎓 Training Steps]
+    Training_Pipeline -->|Reports to| ClearML_Server[🤖 ClearML Server<br/>Training Automation]
+
+    Evaluation_Pipeline -->|Uses| Steps_Evaluation[✅ Evaluation Steps]
+    Evaluation_Pipeline -->|Performs| Local_Evaluation[🧪 Local Evaluation<br/>Free Alternative to SageMaker]
+
+    %% Core LLM Pipeline System Module
+    Steps_ETL -->|Implements| LLM_Pipeline_System_Module[🧠 LLM Pipeline System Module]
+    Steps_Feature -->|Implements| LLM_Pipeline_System_Module
+    Steps_Dataset -->|Implements| LLM_Pipeline_System_Module
+    Steps_Training -->|Implements| LLM_Pipeline_System_Module
+    Steps_Evaluation -->|Implements| LLM_Pipeline_System_Module
+
+    %% Data Storage Layer
+    LLM_Pipeline_System_Module -->|Stores Raw Data| MongoDB[(🗄️ MongoDB<br/>Document Database)]
+    LLM_Module -->|Stores Vectors| Qdrant[(🔍 Qdrant<br/>Vector Database)]
+    LLM_Module -->|Manages Models| HuggingFace_Hub[🤗 HuggingFace Hub<br/>Model Registry]
+
+    %% Free Deployment Options
+    Deploy_Local -->|Creates| Local_Server[🖥️ Local Inference Server<br/>FastAPI + Transformers]
+    Deploy_Local -->|Deploys to| HF_Spaces[☁️ HuggingFace Spaces<br/>Free Cloud Hosting]
+
+    Local_Server -->|Serves| FastAPI_Endpoints[🔗 FastAPI Endpoints<br/>REST API]
+    HF_Spaces -->|Provides| Gradio_Interface[🎨 Gradio Interface<br/>Web UI]
+
+    %% RAG System
+    ML_Service -->|Implements| RAG_System[🔄 RAG System]
+    RAG_System -->|Queries| Qdrant
+    RAG_System -->|Uses| Local_Server
+
+    %% Web Interfaces
+    Web_Interfaces --> FastAPI_Endpoints
+    Web_Interfaces --> Gradio_Interface
+    Web_Interfaces --> MLflow_Server
+    Web_Interfaces --> Chat_Interface[💬 Gradio Chat Interface]
+
+    %% Styling
+    classDef userLayer fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef coreLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef dataLayer fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef deployLayer fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef freeAlternative fill:#e8f5e8,stroke:#2e7d32,stroke-width:3px
+
+    class User,CLI_Tools,Web_Interfaces userLayer
+    class LLM_Module,Steps_ETL,Steps_Feature,Steps_Dataset,Steps_Training,Steps_Evaluation coreLayer
+    class MongoDB,Qdrant,HuggingFace_Hub dataLayer
+    class Local_Server,HF_Spaces,Local_Evaluation,Deploy_Local deployLayer
+    class Local_Evaluation,Local_Server,HF_Spaces freeAlternative

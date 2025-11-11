@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/753912752c4943969d77ebc40b1c0c97/artifacts
+deleted_time: 1762456966143
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 753912752c4943969d77ebc40b1c0c97
+run_name: judicious-moose-406
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762454840230
+status: 1
+tags: []
+user_id: Rithesh_RKZ

@@ -1,0 +1,88 @@
+flowchart TD
+    %% Entry Point
+    Start([🚀 Start MLflow Pipeline]) --> MLflow_Entry[📊 run_mlflow.py<br/>MLflow Pipeline Runner]
+
+    %% Configuration & Setup
+    MLflow_Entry --> Parse_Args[⚙️ Parse Arguments<br/>--pipeline, --config, etc.]
+    Parse_Args --> Set_URI[🔗 Set MLflow Tracking URI<br/>Local or Remote Server]
+    Set_URI --> Load_Config[📄 Load Pipeline Config<br/>YAML Configuration]
+    Load_Config --> Start_Run[🎬 Start MLflow Run<br/>Create Experiment]
+
+    %% Parameter Logging
+    Start_Run --> Log_Params[📝 Log Parameters<br/>Config, Environment, Git Info]
+
+    %% Pipeline Selection
+    Log_Params --> Pipeline_Router{🎯 Select Pipeline}
+    
+    %% Pipeline Options
+    Pipeline_Router -->|digital_data_etl| ETL_Pipeline[📥 Digital Data ETL<br/>Data Collection & Storage]
+    Pipeline_Router -->|feature_engineering| Feature_Pipeline[🔧 Feature Engineering<br/>Data Processing & Embedding]
+    Pipeline_Router -->|generate_instruct_datasets| Instruct_Pipeline[📖 Instruction Datasets<br/>Training Data Generation]
+    Pipeline_Router -->|generate_preference_datasets| Preference_Pipeline[⚖️ Preference Datasets<br/>Preference Data Generation]
+
+    %% Pipeline Execution Details
+    subgraph ETL_Execution ["📥 ETL Pipeline Execution"]
+        ETL_Steps[🔄 Execute ETL Steps]
+        ETL_Steps --> ETL_Crawling[🕷️ Web Crawling]
+        ETL_Steps --> ETL_Storage[🗄️ MongoDB Storage]
+        ETL_Steps --> ETL_Metrics[📊 Log ETL Metrics]
+    end
+
+    subgraph Feature_Execution ["🔧 Feature Engineering Execution"]
+        Feature_Steps[🔄 Execute Feature Steps]
+        Feature_Steps --> Feature_Cleaning[🧹 Data Cleaning]
+        Feature_Steps --> Feature_Embedding[🔗 Text Embedding]
+        Feature_Steps --> Feature_Vector[🔍 Vector Storage]
+        Feature_Steps --> Feature_Metrics[📊 Log Feature Metrics]
+    end
+
+    subgraph Instruct_Execution ["📖 Instruction Dataset Execution"]
+        Instruct_Steps[🔄 Execute Instruction Steps]
+        Instruct_Steps --> Instruct_Generation[🤖 LLM Generation]
+        Instruct_Steps --> Instruct_Validation[✅ Data Validation]
+        Instruct_Steps --> Instruct_HF[🤗 HuggingFace Upload]
+        Instruct_Steps --> Instruct_Metrics[📊 Log Dataset Metrics]
+    end
+
+    subgraph Preference_Execution ["⚖️ Preference Dataset Execution"]
+        Preference_Steps[🔄 Execute Preference Steps]
+        Preference_Steps --> Preference_Generation[🤖 LLM Generation]
+        Preference_Steps --> Preference_Ranking[📊 Preference Ranking]
+        Preference_Steps --> Preference_HF[🤗 HuggingFace Upload]
+        Preference_Steps --> Preference_Metrics[📊 Log Dataset Metrics]
+    end
+
+    %% Connect pipelines to execution
+    ETL_Pipeline --> ETL_Execution
+    Feature_Pipeline --> Feature_Execution
+    Instruct_Pipeline --> Instruct_Execution
+    Preference_Pipeline --> Preference_Execution
+
+    %% MLflow Tracking
+    MLflow_Server[📊 MLflow Tracking Server<br/>Experiment Management]
+    ETL_Metrics --> MLflow_Server
+    Feature_Metrics --> MLflow_Server
+    Instruct_Metrics --> MLflow_Server
+    Preference_Metrics --> MLflow_Server
+
+    %% Completion
+    ETL_Execution --> Pipeline_Complete[✅ Pipeline Complete]
+    Feature_Execution --> Pipeline_Complete
+    Instruct_Execution --> Pipeline_Complete
+    Preference_Execution --> Pipeline_Complete
+
+    Pipeline_Complete --> End_Run[🏁 End MLflow Run<br/>Save Artifacts & Metrics]
+    End_Run --> Success([✅ Success])
+
+    %% Styling
+    classDef entryPoint fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    classDef configStep fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef pipelineType fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef mlflowStep fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef executionStep fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+
+    class Start,Success entryPoint
+    class Parse_Args,Set_URI,Load_Config,Start_Run,Log_Params configStep
+    class ETL_Pipeline,Feature_Pipeline,Instruct_Pipeline,Preference_Pipeline pipelineType
+    class MLflow_Server,End_Run mlflowStep
+    class ETL_Steps,Feature_Steps,Instruct_Steps,Preference_Steps executionStep

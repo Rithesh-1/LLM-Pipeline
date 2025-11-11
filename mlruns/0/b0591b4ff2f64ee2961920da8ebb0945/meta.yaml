@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/0/b0591b4ff2f64ee2961920da8ebb0945/artifacts
+end_time: 1762763350546
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: b0591b4ff2f64ee2961920da8ebb0945
+run_name: gaudy-moth-322
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762763160459
+status: 3
+tags: []
+user_id: Rithesh_RKZ

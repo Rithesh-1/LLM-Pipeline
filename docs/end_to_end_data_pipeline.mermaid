@@ -1,0 +1,71 @@
+flowchart TD
+    %% Entry Point
+    Start([🚀 Start End-to-End Pipeline]) --> Pipeline_Entry[📋 end_to_end_data.py]
+    
+    %% Pipeline Orchestration
+    Pipeline_Entry -->|For each author| ETL_Stage[📥 Digital Data ETL Stage]
+    ETL_Stage -->|Data collected| Feature_Stage[🔧 Feature Engineering Stage]
+    Feature_Stage -->|Features ready| Dataset_Stage[📚 Dataset Generation Stage]
+    Dataset_Stage --> End_Success([✅ Pipeline Complete])
+
+    %% Digital Data ETL Stage
+    subgraph ETL ["📥 Digital Data ETL Pipeline"]
+        ETL_Start[🎯 digital_data_etl.py] 
+        ETL_Start --> Get_User[👤 Get/Create User<br/>steps/etl/get_or_create_user.py]
+        ETL_Start --> Crawl_Data[🕷️ Crawl Links<br/>steps/etl/crawl_links.py]
+        
+        Get_User --> MongoDB_Store[(🗄️ Store in MongoDB)]
+        Crawl_Data --> MongoDB_Store
+        MongoDB_Store --> ETL_Complete[📤 ETL Complete]
+    end
+
+    %% Feature Engineering Stage  
+    subgraph Feature ["🔧 Feature Engineering Pipeline"]
+        Feature_Start[🎯 feature_engineering.py]
+        Feature_Start --> Query_Warehouse[📊 Query Data Warehouse<br/>steps/feature_engineering/query_data_warehouse.py]
+        Query_Warehouse --> Clean_Docs[🧹 Clean Documents<br/>steps/feature_engineering/clean.py]
+        Clean_Docs --> Chunk_Embed[🔗 Chunk & Embed<br/>steps/feature_engineering/rag.py]
+        
+        Clean_Docs --> Vector_Store1[(🔍 Load to Qdrant<br/>Cleaned Documents)]
+        Chunk_Embed --> Vector_Store2[(🔍 Load to Qdrant<br/>Embedded Chunks)]
+        Vector_Store1 --> Feature_Complete[📤 Features Ready]
+        Vector_Store2 --> Feature_Complete
+    end
+
+    %% Dataset Generation Stage
+    subgraph Dataset ["📚 Dataset Generation Pipeline"]
+        Dataset_Start[🎯 generate_datasets.py]
+        Dataset_Start --> Query_Store[🔍 Query Feature Store<br/>steps/generate_datasets/query_feature_store.py]
+        Query_Store --> Create_Prompts[💭 Create Prompts<br/>steps/generate_datasets/create_prompts.py]
+        
+        Create_Prompts --> Gen_Instruct[📖 Generate Instruction Dataset<br/>steps/generate_datasets/generate_instruction_dataset.py]
+        Create_Prompts --> Gen_Preference[⚖️ Generate Preference Dataset<br/>steps/generate_datasets/generate_preference_dataset.py]
+        
+        Gen_Instruct --> Push_HF[🤗 Push to HuggingFace<br/>steps/generate_datasets/push_to_huggingface.py]
+        Gen_Preference --> Push_HF
+        Push_HF --> Dataset_Complete[📤 Datasets Ready]
+    end
+
+    %% Connect stages
+    ETL_Stage -.-> ETL
+    Feature_Stage -.-> Feature  
+    Dataset_Stage -.-> Dataset
+
+    %% MLflow Tracking
+    MLflow_Track[📊 MLflow Tracking<br/>Experiment Logging] 
+    ETL --> MLflow_Track
+    Feature --> MLflow_Track
+    Dataset --> MLflow_Track
+
+    %% Styling
+    classDef pipelineStage fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef dataStorage fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    classDef mlopsTools fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef instructionType fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef preferenceType fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+
+    class ETL_Stage,Feature_Stage,Dataset_Stage pipelineStage
+    class MongoDB_Store,Vector_Store1,Vector_Store2 dataStorage
+    class MLflow_Track,Push_HF mlopsTools
+    class Gen_Instruct instructionType
+    class Gen_Preference preferenceType

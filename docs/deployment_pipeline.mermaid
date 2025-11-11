@@ -1,0 +1,93 @@
+flowchart TD
+    %% Entry Point
+    Start([🚀 Start Deployment]) --> Deploy_CLI[🛠️ deploy_local.py<br/>Deployment CLI]
+
+    %% Deployment Options
+    Deploy_CLI --> Deployment_Choice{🎯 Choose Deployment}
+    
+    Deployment_Choice -->|Local| Local_Deploy[🖥️ Local Deployment<br/>Free Alternative to SageMaker]
+    Deployment_Choice -->|Cloud| HF_Deploy[☁️ HuggingFace Spaces<br/>Free Cloud Hosting]
+
+    %% Local Deployment Flow
+    subgraph Local_Deployment ["🖥️ Local Deployment Pipeline"]
+        Local_Start[🎬 Initialize Local Server]
+        Local_Start --> Load_Model[🤗 Load Model<br/>HuggingFace Transformers]
+        Load_Model --> Setup_FastAPI[⚡ Setup FastAPI Server<br/>REST API Endpoints]
+        Setup_FastAPI --> Memory_Opt[🧠 Memory Optimization<br/>8-bit/4-bit Quantization]
+        Memory_Opt --> Health_Check[❤️ Health Check Endpoint<br/>/health, /model-info]
+        Health_Check --> Local_Ready[✅ Local Server Ready<br/>http://localhost:8000]
+    end
+
+    %% HuggingFace Spaces Deployment Flow
+    subgraph HF_Deployment ["☁️ HuggingFace Spaces Pipeline"]
+        HF_Start[🎬 Initialize HF Space]
+        HF_Start --> Create_Space[🏗️ Create Space<br/>CPU-Basic (Free Tier)]
+        Create_Space --> Generate_App[📝 Generate app.py<br/>Gradio Interface]
+        Generate_App --> Upload_Files[📤 Upload Files<br/>app.py, requirements.txt]
+        Upload_Files --> HF_Build[🔨 Build & Deploy<br/>Automatic Deployment]
+        HF_Build --> HF_Ready[✅ Space Ready<br/>https://huggingface.co/spaces/...]
+    end
+
+    %% Connect deployment choices
+    Local_Deploy --> Local_Deployment
+    HF_Deploy --> HF_Deployment
+
+    %% Model Sources
+    Model_Registry[🤗 HuggingFace Hub<br/>Model Registry] 
+    Model_Registry --> Load_Model
+    Model_Registry --> Generate_App
+
+    %% Deployment Management
+    subgraph Management ["🎛️ Deployment Management"]
+        Status_Check[📊 Status Monitoring<br/>Health & Performance]
+        Config_Save[💾 Save Configuration<br/>deployment.json]
+        Lifecycle[🔄 Lifecycle Management<br/>Start/Stop/Delete]
+    end
+
+    Local_Ready --> Management
+    HF_Ready --> Management
+
+    %% User Interfaces
+    subgraph Interfaces ["🌐 User Interfaces"]
+        FastAPI_UI[🔗 FastAPI Endpoints<br/>REST API]
+        Gradio_UI[🎨 Gradio Interface<br/>Interactive Web UI]
+        Swagger_UI[📚 Swagger Documentation<br/>API Documentation]
+    end
+
+    Local_Ready --> FastAPI_UI
+    Local_Ready --> Swagger_UI
+    HF_Ready --> Gradio_UI
+
+    %% Cost Comparison
+    subgraph Cost_Comparison ["💰 Cost Comparison"]
+        AWS_Cost[💸 AWS SageMaker<br/>$200-500/month]
+        Local_Cost[💚 Local Deployment<br/>$0/month]
+        HF_Cost[💚 HuggingFace Spaces<br/>$0/month (Free Tier)]
+    end
+
+    %% Testing & Validation
+    subgraph Testing ["🧪 Testing & Validation"]
+        Inference_Test[🔍 Inference Testing<br/>Test Endpoints]
+        Load_Test[⚡ Load Testing<br/>Performance Validation]
+        Health_Monitor[❤️ Health Monitoring<br/>Continuous Checks]
+    end
+
+    Management --> Testing
+    Interfaces --> Inference_Test
+
+    %% Success States
+    Local_Ready --> Success_Local[✅ Local Deployment Success<br/>Ready for Inference]
+    HF_Ready --> Success_HF[✅ HF Spaces Success<br/>Public Access Available]
+
+    %% Styling
+    classDef freeAlternative fill:#e8f5e8,stroke:#2e7d32,stroke-width:3px
+    classDef expensiveOption fill:#ffebee,stroke:#d32f2f,stroke-width:2px
+    classDef userInterface fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef managementTool fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef successState fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+
+    class Local_Deploy,HF_Deploy,Local_Cost,HF_Cost freeAlternative
+    class AWS_Cost expensiveOption
+    class FastAPI_UI,Gradio_UI,Swagger_UI userInterface
+    class Status_Check,Config_Save,Lifecycle managementTool
+    class Success_Local,Success_HF successState

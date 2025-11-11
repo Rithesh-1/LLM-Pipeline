@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/0/4fa0f5d13504466db93fae235a5c63a7/artifacts
+end_time: 1762703160910
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 4fa0f5d13504466db93fae235a5c63a7
+run_name: agreeable-doe-244
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762702934620
+status: 3
+tags: []
+user_id: Rithesh_RKZ

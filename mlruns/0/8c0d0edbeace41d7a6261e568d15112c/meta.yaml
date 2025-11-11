@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/0/8c0d0edbeace41d7a6261e568d15112c/artifacts
+end_time: 1762717832981
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 8c0d0edbeace41d7a6261e568d15112c
+run_name: inquisitive-doe-490
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762717616928
+status: 3
+tags: []
+user_id: Rithesh_RKZ

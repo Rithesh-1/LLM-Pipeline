@@ -1,0 +1,20 @@
+service: "llm_engineering.inference.bento_service:RAGService"
+labels:
+  owner: llm-handbook-dev
+  project: llm-twin
+include:
+  - "llm_engineering/"
+python:
+  packages:
+    - torch
+    - mlflow
+    - bentoml
+    - langchain
+    - langchain-openai
+    - qdrant-client
+    - sentence-transformers
+    - unsloth
+    - pydantic
+    - loguru
+    - fastapi
+    - uvicorn

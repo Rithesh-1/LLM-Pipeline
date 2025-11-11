@@ -1,0 +1,25 @@
+{
+  "chunking": {
+    "articles": {
+      "min_length": 1000,
+      "max_length": 2000,
+      "authors": [
+        "Maxime Labonne"
+      ],
+      "num_chunks": 202
+    }
+  },
+  "embedding": {
+    "articles": {
+      "embedding_model_id": "sentence-transformers/all-MiniLM-L6-v2",
+      "embedding_size": 384,
+      "max_input_length": 256,
+      "authors": [
+        "Maxime Labonne"
+      ]
+    }
+  },
+  "num_documents": 26,
+  "num_chunks": 202,
+  "num_embedded_chunks": 202
+}

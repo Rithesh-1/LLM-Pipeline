@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/0/b22509868c594bea8d7e24d0a7c438c8/artifacts
+end_time: 1762774859852
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: b22509868c594bea8d7e24d0a7c438c8
+run_name: adorable-roo-438
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762774724788
+status: 3
+tags: []
+user_id: Rithesh_RKZ

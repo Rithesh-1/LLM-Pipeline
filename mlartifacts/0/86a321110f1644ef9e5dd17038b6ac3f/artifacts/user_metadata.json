@@ -1,0 +1,10 @@
+{
+  "query": {
+    "user_full_name": "Maxime Labonne"
+  },
+  "retrieved": {
+    "user_id": "9ed48d62-cad3-464f-8af9-1481a3c9a141",
+    "first_name": "Maxime",
+    "last_name": "Labonne"
+  }
+}

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/5c304c123c1543feb0ca94a4cd078182/artifacts
+deleted_time: 1762456966135
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 5c304c123c1543feb0ca94a4cd078182
+run_name: rumbling-shark-566
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762454739194
+status: 1
+tags: []
+user_id: Rithesh_RKZ

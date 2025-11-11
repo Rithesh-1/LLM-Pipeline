@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/e6bcc8d3294d42ff925949ba8b1c1258/artifacts
+deleted_time: 1762456966121
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: e6bcc8d3294d42ff925949ba8b1c1258
+run_name: kindly-wolf-389
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762454960222
+status: 1
+tags: []
+user_id: Rithesh_RKZ

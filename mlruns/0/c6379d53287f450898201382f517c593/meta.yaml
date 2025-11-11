@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/0/c6379d53287f450898201382f517c593/artifacts
+end_time: 1762722627605
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: c6379d53287f450898201382f517c593
+run_name: languid-ram-93
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762722282846
+status: 3
+tags: []
+user_id: Rithesh_RKZ

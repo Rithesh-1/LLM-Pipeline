@@ -1,0 +1,7 @@
+# Configuration for feature engineering pipeline
+# Note: ZenML-specific settings have been removed after migration to MLflow
+
+parameters:
+  author_full_names:
+    - Maxime Labonne
+    - Paul Iusztin

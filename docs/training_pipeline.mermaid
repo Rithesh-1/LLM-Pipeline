@@ -1,0 +1,50 @@
+sequenceDiagram
+    participant User as 👤 User
+    participant CLI as 🛠️ CLI (poetry poe)
+    participant Config as 📄 training.yaml
+    participant Pipeline as 🎯 Training Pipeline
+    participant ClearML as 🤖 ClearML Server
+    participant Finetuning as 🧠 Local Finetuning
+    participant HF_Data as 📚 HuggingFace Datasets
+    participant HF_Hub as 🤗 HuggingFace Hub
+    participant MLflow as 📊 MLflow Server
+    participant Storage as 💾 Local Storage
+
+    Note over User, Storage: 🚀 Free Local Training (No AWS SageMaker)
+
+    User->>CLI: poetry poe run-training-pipeline
+    CLI->>Config: Load configuration
+    Config-->>CLI: Training parameters
+    CLI->>Pipeline: Start training pipeline
+
+    Pipeline->>ClearML: Initialize experiment tracking
+    ClearML-->>Pipeline: Task created & environment captured
+
+    Pipeline->>Finetuning: Start local fine-tuning process
+    
+    Note over Finetuning: 🔄 Model Loading & Data Preparation
+    Finetuning->>HF_Hub: Download base model
+    HF_Hub-->>Finetuning: Base LLM model
+    Finetuning->>HF_Data: Load training datasets
+    HF_Data-->>Finetuning: Instruction & Preference datasets
+
+    Note over Finetuning: 🎓 Local Training Process
+    Finetuning->>Finetuning: Initialize Unsloth for efficient training
+    Finetuning->>Finetuning: Setup TRL trainer (SFT/DPO)
+    
+    loop Training Epochs
+        Finetuning->>Finetuning: Train model locally
+        Finetuning->>MLflow: Log training metrics
+        Finetuning->>ClearML: Update experiment progress
+    end
+
+    Note over Finetuning: 💾 Model Saving & Publishing
+    Finetuning->>Storage: Save fine-tuned model locally
+    Finetuning->>MLflow: Log final model artifacts
+    Finetuning->>HF_Hub: Push fine-tuned model (optional)
+    
+    Finetuning-->>Pipeline: Training completed
+    Pipeline-->>CLI: Training finished
+    CLI-->>User: ✅ Training successful
+
+    Note over User, Storage: 💰 Cost: $0 (vs $200-500/month with SageMaker)

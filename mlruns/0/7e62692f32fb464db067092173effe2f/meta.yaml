@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/7e62692f32fb464db067092173effe2f/artifacts
+deleted_time: 1762456966179
+end_time: 1762449245433
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 7e62692f32fb464db067092173effe2f
+run_name: suave-sow-762
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762449244414
+status: 4
+tags: []
+user_id: Rithesh_RKZ

@@ -1,0 +1,39 @@
+# API Limits for external services like OpenAI or Google Gemini (optional)
+API_RATE_LIMIT_PER_MINUTE=15
+API_TOKEN_LIMIT_PER_MINUTE=1000000
+
+# OpenAI API (optional, for dataset generation with OpenAI)
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL_ID=gpt-4o-mini
+
+# Google API (optional, for dataset generation with Gemini)
+GOOGLE_API_KEY=your_google_ai_studio_api_key_here
+GEMINI_MODEL_ID=gemini-1.5-flash-latest
+
+# Hugging Face (required for saving models)
+HUGGINGFACE_ACCESS_TOKEN=your_huggingface_token_here
+
+# MongoDB (default values work for local development)
+DATABASE_HOST=mongodb://llm_pipeline_system:llm_pipeline_system@127.0.0.1:27017
+DATABASE_NAME=llm_pipeline_system
+
+# Qdrant (default values work for cloud instance)
+QDRANT_DATABASE_HOST=https://ef9298e5-b3ff-4792-a19a-6caea6bcf5a2.eu-central-1-0.aws.cloud.qdrant.io
+QDRANT_DATABASE_PORT=6333
+USE_QDRANT_CLOUD=false
+QDRANT_CLOUD_URL=your_qdrant_cloud_url
+QDRANT_APIKEY=your_qdrant_api_key
+
+
+
+# LLM Provider (default: openai, options: openai, gemini)
+LLM_PROVIDER=openai
+
+# ClearML Configuration (for experiment tracking and monitoring)
+CLEARML_PROJECT=LLM-Pipeline-System
+CLEARML_ACCESS_KEY=your_clearml_access_key_here
+CLEARML_SECRET_KEY=your_clearml_secret_key_here
+
+# MLflow Configuration (uses local tracking server by default)
+# Ensure an MLflow tracking server is running, e.g., 'mlflow ui'
+# MLFLOW_TRACKING_URI=http://localhost:5000

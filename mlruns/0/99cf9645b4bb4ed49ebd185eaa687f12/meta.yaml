@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/99cf9645b4bb4ed49ebd185eaa687f12/artifacts
+deleted_time: 1762456966106
+end_time: 1762455835967
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 99cf9645b4bb4ed49ebd185eaa687f12
+run_name: debonair-whale-642
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762455835439
+status: 4
+tags: []
+user_id: Rithesh_RKZ

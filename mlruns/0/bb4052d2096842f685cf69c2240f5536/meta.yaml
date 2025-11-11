@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/bb4052d2096842f685cf69c2240f5536/artifacts
+deleted_time: 1762456966145
+end_time: 1762452364052
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: bb4052d2096842f685cf69c2240f5536
+run_name: useful-lynx-624
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762452363337
+status: 4
+tags: []
+user_id: Rithesh_RKZ

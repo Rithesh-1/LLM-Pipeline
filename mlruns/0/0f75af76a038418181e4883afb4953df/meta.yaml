@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/0/0f75af76a038418181e4883afb4953df/artifacts
+end_time: 1762721692536
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 0f75af76a038418181e4883afb4953df
+run_name: digital_data_etl
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762721649944
+status: 3
+tags: []
+user_id: Rithesh_RKZ

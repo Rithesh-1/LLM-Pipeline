@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/7eca66f5077c402ba4c1043ff2a475bf/artifacts
+deleted_time: 1762456966230
+end_time: 1762449159270
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 7eca66f5077c402ba4c1043ff2a475bf
+run_name: efficient-snake-207
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762449126649
+status: 4
+tags: []
+user_id: Rithesh_RKZ

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/727d8b3033604b5f98d139c82e83ccd3/artifacts
+deleted_time: 1762456966239
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 727d8b3033604b5f98d139c82e83ccd3
+run_name: likeable-vole-761
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762449100613
+status: 1
+tags: []
+user_id: Rithesh_RKZ
